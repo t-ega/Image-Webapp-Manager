@@ -3,5 +3,4 @@ cloudinary==1.30.0
 
 Django==4.1
 django-filter==22.1
-//for the api
 djangorestframework==3.12.2

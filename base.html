@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="newsmilealivefoundation.com">Newsmile Alive Foundation</a>
+  </nav>
+    <title>Hello, world!</title>
+  </head>
+  <body>
+  <style>
+        * {box-sizing: border-box}
+
+/* Set a style for all buttons */
+.cancelbtn, .deletebtn, .uploadbtn{
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity:1;
+}
+
+/* Float cancel and delete buttons and add an equal width */
+.cancelbtn, .deletebtn, .uploadbtn{
+  float: left;
+  width: 50%;
+}
+
+/* Add a color to the cancel button */
+.cancelbtn {
+  background-color: #ccc;
+  color: black;
+}
+
+/* Add a color to the delete button */
+.deletebtn {
+  background-color: #f44336;
+}
+
+.uploadbtn{
+    background-color: #38f020;
+}
+/* Add padding and center-align text to the container */
+.container {
+  padding: 16px;
+  text-align: center;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: #474e5d;
+  padding-top: 50px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* Style the horizontal ruler */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* The Modal Close Button (x) */
+.close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Change styles for cancel button and delete button on extra small screens */
+@media screen and (max-width: 300px) {
+  .cancelbtn, .deletebtn, .uploadbtn{
+    width: 100%;
+  }
+}
+
+/* The alert message box */
+.alert {
+  padding: 20px;
+  background-color: #38f020; /* Red */
+  color: white;
+  margin-bottom: 15px;
+  display: none;
+}
+
+/* The close button */
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* When moving the mouse over the close button */
+.closebtn:hover {
+  color: black;
+}
+
+    </style>
+  {% block content %}
+  {% endblock %}
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script>
+    function cancelUpload(){
+    var cancelModal =  document.getElementById('id03')
+       cancelModal.style.display = 'block'
+        // When the user clicks anywhere outside the modal, close it
+        window.onclick = function(event) {
+            if (event.target == cancelModal) {
+                cancelModal.style.display = "none";
+            }
+            else if (event.target.classList.contains('backBtn')){
+              cancelModal.style.display = 'none';
+            }
+        }
+    }
+
+    function confirmUpload(){
+       var deleteModal =  document.getElementById('id02')
+       deleteModal.style.display = 'block'
+        // When the user clicks anywhere outside the modal, close it
+        window.onclick = function(event) {
+            if (event.target == deleteModal) {
+                deleteModal.style.display = "none";
+            }
+            if (event.target.classList.contains('cancelbtn')){
+                deleteModal.style.display = "none";
+            }else if (event.target.classList.contains('uploadbtn')){
+                if(checkImageFields() && checkPreviousTextField()){
+                    const form = document.getElementById('form')
+                    form.submit()
+                }else{
+                    deleteModal.style.display = 'none'
+                }
+            }
+        }
+    }
+
+
+    function deleteButtonFunc(buttonId){
+        const queryElement = 'div[id ^=' + buttonId + ']'
+        const button = document.querySelector(queryElement)
+        var buttonIdValue = buttonId.slice(6)
+        document.querySelector('.alert').style.display = 'block'
+        button.remove()
+        setTimeout(function () {document.querySelector('.alert').style.display = 'none' }, 2000)
+
+        // remove that particular image id from the field of generated ids
+        const index = arr.indexOf(buttonIdValue)
+        if (index != -1){
+            var list = arr.splice(index, 1)
+        }
+        editElementButtons('delete', buttonId)
+    }
+
+    function editElementButtons(state){
+        if (state == 'new'){
+            var editElement = document.getElementsByClassName('btn btn-success')
+            var  elementButtonId = Array.from(editElement).pop()
+
+            elementButtonId = elementButtonId.attributes.id.value
+
+
+            editElement = document.getElementById(elementButtonId)
+            if (editElement.style.visibility == 'visible'){
+                setTimeout(function (){editElement.style.visibility = 'hidden';}, 300
+                )
+            }else{
+                setTimeout(function (){
+                editElement.style.visibility = 'visible'; }, 300
+                )
+            }
+
+        }else if (state == 'delete'){
+        // check if the last element in the btn btn-success has visibility set to visible if not make it visible
+
+            var editElement = document.getElementsByClassName('btn btn-success')
+            editElement=  editElement[editElement.length - 1]
+            // get the id of the button so we can get the button that has this elementId
+            editElement = editElement.attributes.id.value
+
+            editElement = document.getElementById(editElement)
+            if (editElement.style.visibility == 'hidden'){
+                // make it look stylish by giving it a period to appear
+                setTimeout(function (){
+                editElement.setAttribute('style', 'visibility:visible;'); 600}
+                )
+            }
+        }
+    }
+
+
+    function setTitle(elementId, titleId){
+        const fileInput = document.getElementById(elementId);
+        const selectedFile = fileInput.files[0];
+        document.getElementById(titleId).innerHTML = selectedFile.name;
+    }
+
+    function addString(stringList){
+        var value = ''
+        for(var key in stringList){
+            value = value + stringList[key]
+        }
+        return value
+    }
+
+    function getConfrimation(confrimationElement){
+        // Get the modal
+    var modal = document.getElementById('id01')
+    var modaldisp = modal.style.display = 'block';
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+
+    if (event.target.classList.contains('cancelbtn')){
+        modal.style.display = "none";
+    }else if (event.target.classList.contains('deletebtn')){
+        deleteButtonFunc(confrimationElement)
+        modal.style.display = 'none'
+    }
+    }
+    }
+
+
+    function showPreview(event){
+        var previewId = addString(['image_', event.target.id.slice(6), '-preview']);
+        if (event.target.files.length > 0){
+            var src = URL.createObjectURL(event.target.files[0]);
+            var preview = document.getElementById(previewId);
+            preview.src = src;
+            preview.style.display = 'block';
+            var titleId = addString(['image_', event.target.id.slice(6), '_Name'])
+            setTitle(event.target.id, titleId)
+            updateDescriptionId(event.target.id, event.target.files[0].name);
+        }
+    }
+
+    function updateDescriptionId(descriptionImageId, descriptionImageName)
+    {
+        var descriptionId = descriptionImageId.slice(6)
+        document.getElementById('desc_' + descriptionId).setAttribute('name', 'desc_'+ descriptionImageName)
+        document.getElementById('desc_' + descriptionId).setAttribute('name', 'desc_'+ descriptionImageName)
+    }
+
+    var arr = []
+
+    function setElementsDesc(){
+        // generate a random number from 2 to 11 the adds '2' to it
+        let desc = Math.floor(Math.random() * 12) + 2;
+        return desc.toString()
+    }
+
+    function newElement(elementType, elementAttributes, elementText = false){
+        var newelement = document.createElement(elementType)
+        for (var key in elementAttributes){
+            newelement.setAttribute(key, elementAttributes[key])
+        }
+        if (elementText){
+            for (var text in elementText){
+                newelement.appendChild(document.createTextNode(elementText[text]))
+            }
+        }
+        return newelement
+    }
+
+
+    function newButton(){
+        // send the state of the last element to the editElementButtons
+        editElementButtons('new')
+        if (arr.length < 10){
+            element_value = setElementsDesc()
+            var result = arr.indexOf(element_value)
+
+            while (result != -1){
+            element_value = setElementsDesc()
+            result = arr.indexOf(element_value)
+            }
+        }else{
+            alert('sorry you have reached the maximum number of images')
+            return 0
+        }
+        arr.push(element_value)
+
+        // create reusable components such as linebreak, the form we are going to append to
+        var form = document.getElementById('form')
+        var lineBreak = document.createElement('br')
+        var lastButton = form.lastElementChild
+
+        // create the name of the image button
+        var imageName = 'image_' + element_value
+
+        // the attributes that we are going to  use for the image input
+        var imageAttr = {
+            'accept': 'image/*',
+            'type': 'file',
+            'name':imageName,
+            'id':imageName,
+            'required':true,
+            'style':'display: none;',
+            'onchange':'showPreview(event)'
+        }
+        var imageInput = newElement('input', imageAttr,)
+
+        //creating a field to hold the image title
+        var imageTitleAttr = {
+            'class':'card-title',
+            'id':imageName + '_Name'
+        }
+
+        var imageTitle = newElement('h5', imageTitleAttr)
+        imageTitle.innerHTML = 'New Image'
+
+        //a field for the span class
+        var spanAttr ={
+            'class':'btn btn-primary',
+            'style':'margin-right:10px;'
+        }
+        var spanClass = newElement('span', spanAttr)
+        spanClass.appendChild(document.createTextNode('Choose'))
+        spanClass.appendChild(imageInput)
+
+        // creating the preview field where the image can be preview before uploading
+        var previewImageFieldId = imageName + '-preview'
+
+        var previewFieldAtrr = {
+            'class': 'preview',
+        }
+        var previewImageFieldAtrr = {
+            'id': previewImageFieldId,
+            'src':'',
+            'style':'display: block;'
+        }
+        var previewField = newElement('div', previewFieldAtrr)
+        var previewImageField = newElement('img', previewImageFieldAtrr)
+        previewField.append(previewImageField)
+
+        // creating a text field
+        var description_value = 'desc_' + element_value
+        var descriptionAtrr = {
+            'class': 'form-control',
+            'name': description_value,
+            'id': description_value,
+            'aria-label':"With textarea"
+        }
+        var description = newElement('textarea', descriptionAtrr)
+
+        // the div id for the DOM created objects
+        var div_class = 'image-' + element_value
+
+        //create a delete button
+        var deleteButtonAttr = {
+            'type': 'button',
+            'class':'btn btn-danger',
+            'style':'position:absolute; left: 180%;',
+            // 'onclick': "deleteButtonFunc('" + div_class + "')"
+            'onclick':"getConfrimation('" + div_class + "')"
+
+        }
+
+        //create a new Button
+        var newButtonTagAttr = {
+            'class':'btn btn-success',
+            'type':'button',
+            'style':'visibility: visible;',
+            'id':addString(['newButton_', element_value]),
+            'onclick':'checkAllFields()'
+        }
+
+        var newButtonTag = newElement('button', newButtonTagAttr)
+        newButtonTag.appendChild(document.createTextNode('New'))
+
+        // create the delete button element
+        const deleteButton = newElement('button', deleteButtonAttr, 'Delete')
+
+        // create a div to hold all the created elements
+        const divContainerAttrr = {
+            'id': div_class,
+            'class':'col-sm-6'
+        }
+
+        var divContainer = newElement('div', divContainerAttrr)
+
+        // create all the the div card to wrap all our elements
+        var divCard = document.createElement('div')
+        divCard.setAttribute('class', 'card')
+
+        // create the div card body
+        var divCardBody = document.createElement('div')
+        divCardBody.setAttribute('class', 'card-body')
+
+        // create the div class for selecting the image
+        var imageDivAtrr = {
+            'class':'col-lg-6 col-sm-6 col-12',
+            'style':'padding-top:20px'
+        }
+
+
+        //create the span class for the text
+        var descDivSpan = document.createElement('span')
+        descDivSpan.setAttribute('class', 'input-group-text')
+        descDivSpan.appendChild(document.createTextNode('Desciption'))
+
+
+        // create the description div tag
+        var descDivCard = document.createElement('div')
+        descDivCard.setAttribute('class', 'input-group-prepend')
+        descDivCard.appendChild(descDivSpan)
+
+
+        var inputGroup = document.createElement('div')
+        inputGroup.setAttribute('class', 'input-group')
+
+        // create the label for the input group
+        var inputLabel = document.createElement('label')
+        inputLabel.setAttribute('class', 'input-group-btn')
+
+        var imageDiv = newElement('div', imageDivAtrr)
+        divCard.appendChild(divCardBody)
+        divCardBody.appendChild(previewField)
+        divCardBody.appendChild(imageTitle)
+        divCardBody.appendChild(descDivCard)
+        descDivSpan.appendChild(spanClass)
+        divCardBody.appendChild(description)
+        divCardBody.appendChild(imageDiv)
+        imageDiv.appendChild(inputGroup)
+        inputGroup.appendChild(inputLabel)
+        inputLabel.appendChild(spanClass)
+        spanClass.appendChild(imageInput)
+        inputLabel.appendChild(newButtonTag)
+        inputLabel.appendChild(deleteButton)
+        divCard.appendChild(divCardBody)
+        divContainer.appendChild(divCard)
+
+        // divContainer.appendChild(deleteButton)
+
+        // insert the div and its children into the form
+       var card = document.getElementById('form-row')
+       card.appendChild(divContainer)
+    }
+
+    function checkPreviousTextField(){
+        var text_field = document.getElementById('desc_1')
+        if (text_field.value == ''){
+            alert('Please enter a description')
+            text_field.focus()
+            return false
+        }
+        else if (arr.length == 0){
+            return true
+        }
+        else{
+            var text_id = 'desc_' + arr[arr.length-1]
+            var text_field = document.getElementById(text_id)
+
+            if (text_field.value == ''){
+                alert('Please enter a description')
+                text_field.focus()
+                return false
+            }else{
+                return true
+            }
+        }
+    }
+
+    function checkImageFields(){
+        var image_field = document.getElementById('image_1')
+        if (image_field.files.length == 0)
+        {
+                alert('Please select an image to upload first!')
+                return 0
+        }
+        else if (arr.length == 0)
+        {
+        return true
+        }
+        else if (arr)
+        {
+            var imageId = 'image_' + arr[arr.length-1]
+            var node = document.getElementById(imageId)
+
+                if (node.files.length == 0 || document.getElementById(imageId + '-preview').src == ''){
+                    alert('You ensure you fill in all image boxes');
+                    return false
+                }
+                else{
+                    return true
+                }
+        }
+    }
+
+    function checkAllFields(){
+        var result = checkPreviousTextField()
+        var image_field = checkImageFields()
+        if (result && image_field){
+                newButton();
+        }
+    }
+
+
+
+</script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

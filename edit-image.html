@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form action="{% url 'edit-image' public_id %}" method="POST" id="form" name="uploadform" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row" id='form-row'>
+        <div class="col-sm-6" id="image-1">
+          <div class="card">
+            <div class="card-body">
+                <div class="preview">
+                    <img src="{{image_src}}" id="image_1-preview">
+                </div>
+                <h5 class="card-title" id="image_1_Name">Image Name</h5>
+              <div class="input-group-prepend">
+                <span class="input-group-text">description</span>
+              </div>
+              <textarea class="form-control" aria-label="With textarea" name="desc_1" id="desc_1" value="{{image_desc}}" required="true">{{image_desc}}</textarea>
+              <div class="col-lg-6 col-sm-6 col-12" style="padding-top:20px">
+                <div class="input-group" >
+                   <label class="input-group-btn" id="input-group">
+                       <span class="btn btn-primary" style="margin-right:10px;" >
+                           Choose
+                           <input accept="image/*" type="file" name="image_1" id="image_1" style="display: none;" onchange="showPreview(event)" required="true"/>
+                       </span>
+                   </label>
+               </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+</form>
+
+<div id="id03" class="modal" style="display: none;">
+    <span onclick="document.getElementById('id03').style.display='none'" class="close" title="Close Modal">&times;</span>
+    <form class="modal-content" action="">
+      <div class="container">
+        <h1>Cancel Edit</h1>
+        <p>Are you sure you want to cancel all? progress would be lost!</p>
+        <div class="clearfix">
+          <button type="button" class="backBtn btn btn-success">No, Go back</button>
+          <a href="{% url 'admin-panel' %}"><button type="button" class="btn btn-danger">Yes, Cancel</button></a>
+        </div>
+      </div>
+    </form>
+</div>
+
+<div id="id02" class="modal" style="display: none;">
+    <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
+    <form class="modal-content" action="">
+      <div class="container">
+        <h1>Upload Image</h1>
+        <p>Are you sure you want to upload?</p>
+        <div class="clearfix">
+          <button type="button" class="cancelbtn">Cancel</button>
+          <button type="button" class="uploadbtn">Yes, I'm sure</button>
+        </div>
+      </div>
+    </form>
+</div>
+
+<button type='button' class="btn btn-info" id="submit" style="margin: 1rem;" onclick="confirmUpload()">Click to Upload</button>
+<button type="button" class="btn btn-danger" style="margin: 1rem;" onclick="cancelUpload()">Cancel Upload</button>
+
+
+{% endblock %}

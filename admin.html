@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+   <div class="row">
+       {% for items in images %}
+        <div class="col-sm-6">
+            <div class="card">
+                <img class="card-img-top" src="{{items.image_url}}" alt="Card image cap">
+                <div class="card-body">
+                <p class="card-text">{{items.description}}</p>
+                <a href="{% url 'edit-image' items.public_id %}" class="btn btn-primary">Edit</a>
+                <a href="" class="btn btn-secondary btn-danger">Delete</a>
+            </div>
+         </div>
+  </div>
+       {% endfor %}
+   </div>
+    <a href="{% url 'upload-image' %}"><button type="button" class="btn btn-success" style="margin: 1rem;">Add Image</button></a>
+</div>
+{% endblock %}
